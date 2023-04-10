@@ -1,10 +1,9 @@
 ﻿using System.IO;
 using Newtonsoft.Json.Linq;
-using ThumperFileAPI.Generics;
 
 namespace ThumperFileAPI.Primatives
 {
-	public class PCString : PCObject
+	public class PCString
 	{
 		public readonly string value;
 
@@ -20,14 +19,14 @@ namespace ThumperFileAPI.Primatives
 			return new PCString(value);
 		}
 
-		public override void ToBytes(BinaryWriter bytes)
+		public void ToBytes(BinaryWriter bytes)
 		{
 			bytes.Write(value.Length);
-			bytes.Write(value);
+			bytes.Write(value.ToCharArray());
 		}
 
 		public static PCString FromJson(JToken token) => new(token.ToObject<string>());
 		
-		public override JToken ToJson() => new JValue(value);
+		public JToken ToJson() => new JValue(value);
 	}
 }

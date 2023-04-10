@@ -1,10 +1,9 @@
 ﻿using System.IO;
 using Newtonsoft.Json.Linq;
-using ThumperFileAPI.Generics;
 
 namespace ThumperFileAPI.Primatives
 {
-	public class PCFloat : PCObject
+	public class PCFloat
 	{
 		public readonly float value;
 
@@ -15,10 +14,10 @@ namespace ThumperFileAPI.Primatives
 		
 		public static PCFloat FromBytes(BinaryReader bytes) => new(bytes.ReadSingle());
 
-		public override void ToBytes(BinaryWriter bytes) => bytes.Write(value);
+		public void ToBytes(BinaryWriter bytes) => bytes.Write(value);
 
 		public static PCFloat FromJson(JToken token) => new(token.ToObject<float>());
 		
-		public override JToken ToJson() => new JValue(value);
+		public JToken ToJson() => new JValue(value);
 	}
 }

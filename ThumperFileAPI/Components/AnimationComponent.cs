@@ -1,11 +1,10 @@
 ﻿using System.IO;
 using Newtonsoft.Json.Linq;
-using ThumperFileAPI.Generics;
 using ThumperFileAPI.Primatives;
 
 namespace ThumperFileAPI.Components
 {
-	public class AnimationComponent : PCObject
+	public class AnimationComponent
 	{
 		public readonly PCInt versionNumber;
 		public readonly PCFloat frame;
@@ -23,7 +22,7 @@ namespace ThumperFileAPI.Components
 			PCFloat.FromBytes(bytes),
 			PCString.FromBytes(bytes));
 
-		public override void ToBytes(BinaryWriter bytes)
+		public void ToBytes(BinaryWriter bytes)
 		{
 			versionNumber.ToBytes(bytes);
 			frame.ToBytes(bytes);
@@ -31,10 +30,17 @@ namespace ThumperFileAPI.Components
 		}
 
 		public static AnimationComponent FromJson(JToken token) => new(
-			new PCInt(1),
-			new PCFloat(0),
-			new PCString("kTimeBeats"));
+			PCInt.FromJson(token["version_number"]),
+			PCFloat.FromJson(token["frame"]),
+			PCString.FromJson(token["unit_of_time"]));
 
-		public override JToken ToJson() => new JObject();
+		public JToken ToJson()
+		{
+			JObject jObject = new();
+			jObject.Add("version_number", versionNumber.ToJson());
+			jObject.Add("frame", frame.ToJson());
+			jObject.Add("unit_of_time", unitOfTime.ToJson());
+			return jObject;
+		}
 	}
 }
